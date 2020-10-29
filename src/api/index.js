@@ -1,5 +1,3 @@
-import React from "react";
-import PropTypes from "prop-types";
 import axios from "axios";
 
 const episodesUrl = process.env.REACT_APP_API_URL + "episodes";
