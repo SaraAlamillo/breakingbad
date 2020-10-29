@@ -13,14 +13,16 @@ import {
   ListItem,
   ListItemText,
   Container as MaterialContainer,
+  LinearProgress,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import { useStyles } from "./Container.style";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
-export const Container = ({ menuItems, children }) => {
+export const Container = ({ menuItems, children, loading }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
@@ -53,9 +55,11 @@ export const Container = ({ menuItems, children }) => {
           </IconButton>
 
           <Typography variant="h6" noWrap>
-            Persistent drawer
+            {process.env.REACT_APP_TITLE}
           </Typography>
         </Toolbar>
+
+        <LinearProgress className={clsx(!loading && classes.hide)} />
       </AppBar>
 
       <Drawer
@@ -104,7 +108,7 @@ export const Container = ({ menuItems, children }) => {
 };
 
 Container.propTypes = {
-  categories: PropTypes.arrayOf(
+  menuItems: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
@@ -114,3 +118,12 @@ Container.propTypes = {
 };
 
 Container.defaultProps = {};
+
+const mapStateToProps = (state) => ({ ...state });
+
+const mapDispatchToProps = (dispatch) => ({});
+
+export const ContainerRedux = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Container);
