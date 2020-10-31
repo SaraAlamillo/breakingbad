@@ -1,13 +1,23 @@
 import { combineReducers } from "redux";
 import {
-  DATA_ERROR,
-  DATA_LOADING,
+  DATA_CALL_CHARACTER,
+  DATA_CALL_CHARACTERS,
+  DATA_CALL_DEATHS,
+  DATA_CALL_EPISODES,
+  DATA_CALL_QUOTE,
+  DATA_CALL_QUOTES,
   DATA_RESPONSE_CHARACTER,
   DATA_RESPONSE_CHARACTERS,
   DATA_RESPONSE_DEATHS,
   DATA_RESPONSE_EPISODES,
   DATA_RESPONSE_QUOTE,
   DATA_RESPONSE_QUOTES,
+  DATA_ERROR_CHARACTER,
+  DATA_ERROR_CHARACTERS,
+  DATA_ERROR_DEATHS,
+  DATA_ERROR_EPISODES,
+  DATA_ERROR_QUOTE,
+  DATA_ERROR_QUOTES,
 } from "../actions";
 
 const initialState = {
@@ -23,7 +33,12 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case DATA_LOADING:
+    case DATA_CALL_EPISODES:
+    case DATA_CALL_CHARACTERS:
+    case DATA_CALL_CHARACTER:
+    case DATA_CALL_QUOTES:
+    case DATA_CALL_QUOTE:
+    case DATA_CALL_DEATHS:
       return { ...state, loading: true };
     case DATA_RESPONSE_EPISODES:
       return { ...state, loading: false, dataEpisodes: action.payload };
@@ -37,16 +52,46 @@ const reducer = (state = initialState, action) => {
       return { ...state, loading: false, dataQuote: action.payload };
     case DATA_RESPONSE_DEATHS:
       return { ...state, loading: false, dataDeaths: action.payload };
-    case DATA_ERROR:
+    case DATA_ERROR_EPISODES:
       return {
         ...state,
         loading: false,
         errorDescription: action.payload,
         dataEpisodes: [],
+      };
+    case DATA_ERROR_CHARACTERS:
+      return {
+        ...state,
+        loading: false,
+        errorDescription: action.payload,
         dataCharacters: [],
+      };
+    case DATA_ERROR_CHARACTER:
+      return {
+        ...state,
+        loading: false,
+        errorDescription: action.payload,
         dataCharacter: {},
+      };
+    case DATA_ERROR_QUOTES:
+      return {
+        ...state,
+        loading: false,
+        errorDescription: action.payload,
         dataQuotes: [],
+      };
+    case DATA_ERROR_QUOTE:
+      return {
+        ...state,
+        loading: false,
+        errorDescription: action.payload,
         dataQuote: {},
+      };
+    case DATA_ERROR_DEATHS:
+      return {
+        ...state,
+        loading: false,
+        errorDescription: action.payload,
         dataDeaths: [],
       };
     default:
