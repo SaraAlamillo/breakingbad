@@ -18,12 +18,12 @@ import {
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import { useStyles } from "./Container.style";
+import { containerStyles } from "./Container.style";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
-export const Container = ({ menuItems, children, loading }) => {
-  const classes = useStyles();
+export const Container = ({ menuItems, children, loading, ...props }) => {
+  const classes = containerStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
@@ -46,7 +46,7 @@ export const Container = ({ menuItems, children, loading }) => {
         <Toolbar>
           <IconButton
             color="inherit"
-            aria-label="open drawer"
+            aria-label="Open the left menu"
             onClick={handleDrawerOpen}
             edge="start"
             className={clsx(classes.menuButton, open && classes.hide)}
@@ -100,7 +100,6 @@ export const Container = ({ menuItems, children, loading }) => {
         })}
       >
         <div className={classes.drawerHeader} />
-
         {children}
       </main>
     </MaterialContainer>
