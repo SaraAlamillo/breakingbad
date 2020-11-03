@@ -21,10 +21,11 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import { containerStyles } from "./Container.style";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { withTheme } from "../../providers/Theme/Theme";
 
-export const Container = ({ menuItems, children, loading, ...props }) => {
+export const Container = ({ menuItems, children, loading, theme }) => {
   const classes = containerStyles();
-  const theme = useTheme();
+  const themeMaterial = useTheme();
   const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => {
@@ -42,6 +43,7 @@ export const Container = ({ menuItems, children, loading, ...props }) => {
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
+        color={theme.dark ? "primary" : "secondary"}
       >
         <Toolbar>
           <IconButton
@@ -73,7 +75,7 @@ export const Container = ({ menuItems, children, loading, ...props }) => {
       >
         <div className={classes.drawerHeader}>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "ltr" ? (
+            {themeMaterial.direction === "ltr" ? (
               <ChevronLeftIcon />
             ) : (
               <ChevronRightIcon />
@@ -126,3 +128,5 @@ export const ContainerRedux = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Container);
+
+export const ContainerThemable = withTheme(ContainerRedux);

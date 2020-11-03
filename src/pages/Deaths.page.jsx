@@ -4,17 +4,7 @@ import { withRouter } from "react-router-dom";
 import { DATA_CALL_DEATHS } from "../actions";
 import { DataGrid } from "@material-ui/data-grid";
 import { Alert, AlertTitle } from "@material-ui/lab";
-import { Box, Container, Row, Col, Snackbar } from "@material-ui/core";
-import {
-  BarChart,
-  Bar,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from "recharts";
+import { Box, Snackbar } from "@material-ui/core";
 
 export class Deaths extends Component {
   static propTypes = {};
@@ -32,19 +22,43 @@ export class Deaths extends Component {
 
     this.state = {
       extraInfo: { open: false, title: "", body: "" },
+      deaths: [],
     };
   }
 
+  callGetDeaths(props, nextProps) {
+    if (
+      !props.loading &&
+      !nextProps.loading &&
+      (!Array.isArray(props.dataDeaths) || props.dataDeaths.length === 0)
+    ) {
+      nextProps.getDeaths();
+    }
+  }
+
   componentDidMount() {
-    this.props.getDeaths();
+    this.callGetDeaths(this.props, this.props);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    let render = false;
+
+    this.callGetDeaths(this.props, nextProps);
+
+    if (
+      Array.isArray(nextProps.dataDeaths) &&
+      nextProps.dataDeaths.length > 0 &&
+      Array.isArray(this.props.dataDeaths) &&
+      this.props.dataDeaths.length > 0 &&
+      nextProps.dataDeaths.length !== this.props.dataCharacters.length
+    ) {
+      render = true;
+    }
+
+    return render;
   }
 
   render() {
-    const deaths = this.props.dataDeaths.map((death) => ({
-      ...death,
-      id: death.death_id,
-    }));
-
     const headers = [
       { field: "death", headerName: "Death", width: 300 },
       { field: "responsible", headerName: "Responsible", width: 400 },
@@ -54,14 +68,7 @@ export class Deaths extends Component {
     ];
 
     const handleClick = (title, body) => {
-      this.setState({
-        ...this.state,
-        extraInfo: {
-          open: true,
-          title,
-          body,
-        },
-      });
+      this.setState({ extraInfo: { open: true, title, body } });
     };
 
     const handleClose = (event, reason) => {
@@ -69,56 +76,15 @@ export class Deaths extends Component {
         return;
       }
 
-      this.setState({
-        ...this.state,
-        extraInfo: { ...this.state.extraInfo, open: false },
-      });
+      this.setState((state, props) => ({
+        extraInfo: { ...state.extraInfo, open: false },
+      }));
     };
 
-    const data = [
-      {
-        name: "Page A",
-        uv: 4000,
-        pv: 2400,
-        amt: 2400,
-      },
-      {
-        name: "Page B",
-        uv: 3000,
-        pv: 1398,
-        amt: 2210,
-      },
-      {
-        name: "Page C",
-        uv: 2000,
-        pv: 9800,
-        amt: 2290,
-      },
-      {
-        name: "Page D",
-        uv: 2780,
-        pv: 3908,
-        amt: 2000,
-      },
-      {
-        name: "Page E",
-        uv: 1890,
-        pv: 4800,
-        amt: 2181,
-      },
-      {
-        name: "Page F",
-        uv: 2390,
-        pv: 3800,
-        amt: 2500,
-      },
-      {
-        name: "Page G",
-        uv: 3490,
-        pv: 4300,
-        amt: 2100,
-      },
-    ];
+    const deaths = this.props.dataDeaths.map((death) => ({
+      ...death,
+      id: death.death_id,
+    }));
 
     return (
       <>

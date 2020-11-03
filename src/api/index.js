@@ -67,3 +67,12 @@ export const getQuotesByAuthor = (author) => {
 export const getDeaths = () => {
   return axios.get(deathsUrl);
 };
+
+/**
+ * Obtiene un episodio concreto
+ * @param {Number} id ID del episodio
+ */
+export const getEpisodeById = (id) => {
+  let url = `${episodesUrl}/${id}`;
+  return axios.get(url);
+};

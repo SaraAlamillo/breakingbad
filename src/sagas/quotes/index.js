@@ -20,12 +20,12 @@ function* getQuotes(action) {
     if (response.status === 200) {
       yield put({ type: DATA_RESPONSE_QUOTES, payload: response.data });
     } else {
-      throw `${response.status} - ${response.statusText}`;
+      throw new Error(`${response.status} - ${response.statusText}`);
     }
   } catch (error) {
     yield put({
       type: DATA_ERROR_QUOTES,
-      payload: error?.response,
+      payload: error,
     });
   }
 }

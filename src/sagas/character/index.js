@@ -20,12 +20,12 @@ function* getCharacter(action) {
     if (response.status === 200) {
       yield put({ type: DATA_RESPONSE_CHARACTER, payload: response.data });
     } else {
-      throw `${response.status} - ${response.statusText}`;
+      throw new Error(`${response.status} - ${response.statusText}`);
     }
   } catch (error) {
     yield put({
       type: DATA_ERROR_CHARACTER,
-      payload: error?.response,
+      payload: error,
     });
   }
 }
