@@ -12,13 +12,10 @@ export const Deaths = ({ loading, dataDeaths, getDeaths }) => {
     getDeaths();
   }
 
-  const [data] = useState(
-    dataDeaths.map((death) => ({
-      ...death,
-      id: death.death_id,
-    }))
-  );
-
+  const data = dataDeaths.map((death) => ({
+    ...death,
+    id: death.death_id,
+  }));
   const [extraInfo, setExtraInfo] = useState({
     open: false,
     title: "",
