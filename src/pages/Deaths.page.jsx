@@ -8,6 +8,17 @@ import { Alert } from "../components/Alert/Alert.component";
 import { contentData } from "../utils";
 
 export const Deaths = ({ loading, dataDeaths, getDeaths }) => {
+  if (!loading && !contentData(dataDeaths)) {
+    getDeaths();
+  }
+
+  const [data] = useState(
+    dataDeaths.map((death) => ({
+      ...death,
+      id: death.death_id,
+    }))
+  );
+
   const [extraInfo, setExtraInfo] = useState({
     open: false,
     title: "",
@@ -34,15 +45,6 @@ export const Deaths = ({ loading, dataDeaths, getDeaths }) => {
     setExtraInfo({ open: false });
   };
 
-  if (!loading && !contentData(dataDeaths)) {
-    getDeaths();
-  }
-
-  const deaths = dataDeaths.map((death) => ({
-    ...death,
-    id: death.death_id,
-  }));
-
   return (
     <>
       <Alert
@@ -61,7 +63,7 @@ export const Deaths = ({ loading, dataDeaths, getDeaths }) => {
 
       <DataGrid
         autoHeight={true}
-        rows={deaths}
+        rows={data}
         columns={headers}
         pageSize={10}
         onCellClick={(CellParams) =>
