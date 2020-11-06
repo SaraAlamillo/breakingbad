@@ -19,7 +19,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import { containerStyles } from "./Container.style";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { withTheme } from "../../providers/Theme/Theme";
 
@@ -124,9 +124,11 @@ const mapStateToProps = (state) => ({ ...state });
 
 const mapDispatchToProps = (dispatch) => ({});
 
+export const ContainerRoute = withRouter(Container);
+
 export const ContainerRedux = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Container);
+)(ContainerRoute);
 
 export const ContainerThemable = withTheme(ContainerRedux);

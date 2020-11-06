@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { DATA_CALL_DEATHS } from "../actions";
@@ -8,9 +8,11 @@ import { Alert } from "../components/Alert/Alert.component";
 import { contentData } from "../utils";
 
 export const Deaths = ({ loading, dataDeaths, getDeaths }) => {
-  if (!loading && !contentData(dataDeaths)) {
-    getDeaths();
-  }
+  useEffect(() => {
+    if (!loading && !contentData(dataDeaths)) {
+      getDeaths();
+    }
+  }, [loading, dataDeaths, getDeaths]);
 
   const data = dataDeaths.map((death) => ({
     ...death,

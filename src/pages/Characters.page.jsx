@@ -5,7 +5,7 @@ import {
   ListItemAvatar,
   TextField,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link, withRouter, Route } from "react-router-dom";
 import { DATA_CALL_CHARACTERS } from "../actions";
@@ -13,13 +13,16 @@ import { CharacterRedux } from "./Character.page";
 import { contentData, sortArray } from "../utils";
 
 export const Characters = ({ loading, dataCharacters, getCharacters }) => {
-  if (!loading && !contentData(dataCharacters)) {
-    getCharacters();
-  }
+  useEffect(() => {
+    if (!loading && !contentData(dataCharacters)) {
+      getCharacters();
+    }
+  }, [loading, dataCharacters, getCharacters]);
 
   const [filteredData, setFilteredData] = useState(dataCharacters);
 
   const handleChangeSearch = (event) => {
+    console.log("handleChangeSearch");
     const value = event.target.value.toLowerCase();
 
     setFilteredData(

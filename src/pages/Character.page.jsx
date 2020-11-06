@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import {
@@ -22,12 +22,14 @@ export const Character = ({
 }) => {
   const name = match?.params?.name || "";
 
-  if (
-    !loading &&
-    (!contentData(dataCharacter) || dataCharacter[0]?.name !== name)
-  ) {
-    getCharacter(name);
-  }
+  useEffect(() => {
+    if (
+      !loading &&
+      (!contentData(dataCharacter) || dataCharacter[0]?.name !== name)
+    ) {
+      getCharacter(name);
+    }
+  }, [loading, dataCharacter, getCharacter, name]);
 
   const character =
     !loading && contentData(dataCharacter) ? dataCharacter[0] : undefined;
