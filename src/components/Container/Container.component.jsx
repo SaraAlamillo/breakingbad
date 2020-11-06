@@ -23,7 +23,13 @@ import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { withTheme } from "../../providers/Theme/Theme";
 
-export const Container = ({ menuItems, children, loading, theme }) => {
+export const Container = ({
+  menuItems,
+  children,
+  loading,
+  theme,
+  searchEngineLink,
+}) => {
   const classes = containerStyles();
   const themeMaterial = useTheme();
   const [open, setOpen] = useState(false);
@@ -87,12 +93,22 @@ export const Container = ({ menuItems, children, loading, theme }) => {
 
         <List>
           {menuItems.map((item) => (
-            <ListItem button key={item.id}>
-              <Link to={item.route} className={classes.linkMenu}>
-                <ListItemText primary={item.name} />
-              </Link>
+            <ListItem button key={item.id} component={Link} to={item.route}>
+              <ListItemText primary={item.name} className={classes.linkMenu} />
             </ListItem>
           ))}
+
+          {searchEngineLink && (
+            <>
+              <Divider />
+              <ListItem button component={Link} to={searchEngineLink}>
+                <ListItemText
+                  primary="Search engine"
+                  className={classes.linkMenu}
+                />
+              </ListItem>
+            </>
+          )}
         </List>
       </Drawer>
 
@@ -116,6 +132,7 @@ Container.propTypes = {
       route: PropTypes.string.isRequired,
     })
   ).isRequired,
+  searchEngineLink: PropTypes.string,
 };
 
 Container.defaultProps = {};

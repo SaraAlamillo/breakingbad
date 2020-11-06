@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import { createStore } from "./store";
 import { ThemeSelector } from "./components/ThemeSelector/ThemeSelector.component";
 import { EpisodeRedux } from "./pages/Episode.page";
+import { SearchEngineRedux } from "./pages/SearchEngine.page";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
               { id: 2, name: "Characters", route: "/characters" },
               { id: 3, name: "Deaths", route: "/deaths" },
             ]}
+            searchEngineLink="/search"
           >
             <Switch>
               <Route path="/seasons">
@@ -36,6 +38,10 @@ function App() {
 
               <Route path="/episode/:id">
                 <EpisodeRedux></EpisodeRedux>
+              </Route>
+
+              <Route path="/search">
+                <SearchEngineRedux></SearchEngineRedux>
               </Route>
             </Switch>
           </ContainerThemable>
