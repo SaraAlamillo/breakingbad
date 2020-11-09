@@ -27,7 +27,7 @@ const initialState = {
   character: { loading: false, data: [], errorDescription: null },
   characters: { loading: false, data: [], errorDescription: null },
   episode: { loading: false, data: [], errorDescription: null },
-  espisodes: { loading: false, data: [], errorDescription: null },
+  episodes: { loading: false, data: [], errorDescription: null },
   quote: { loading: false, data: [], errorDescription: null },
   quotes: { loading: false, data: [], errorDescription: null },
   deaths: { loading: false, data: [], errorDescription: null },

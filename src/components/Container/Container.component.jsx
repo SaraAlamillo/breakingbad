@@ -34,7 +34,7 @@ export const Container = ({
     props.character.loading ||
     props.characters.loading ||
     props.episode.loading ||
-    props.espisodes.loading ||
+    props.episodes.loading ||
     props.quote.loading ||
     props.quotes.loading ||
     props.deaths.loading;
