@@ -12,25 +12,24 @@ import { DATA_CALL_CHARACTERS } from "../actions";
 import { CharacterRedux } from "./Character.page";
 import { contentData, sortArray } from "../utils";
 
-export const Characters = ({ loading, dataCharacters, getCharacters }) => {
+export const Characters = ({ characters, getCharacters }) => {
   useEffect(() => {
-    if (!loading && !contentData(dataCharacters)) {
+    if (!characters.loading && !contentData(characters.data)) {
       getCharacters();
     }
-  }, [loading, dataCharacters, getCharacters]);
+  }, [characters, getCharacters]);
 
-  const [filteredData, setFilteredData] = useState(dataCharacters);
+  const [filteredData, setFilteredData] = useState(characters.data);
 
   const handleChangeSearch = (event) => {
-    console.log("handleChangeSearch");
     const value = event.target.value.toLowerCase();
 
     setFilteredData(
       value !== ""
-        ? sortArray(dataCharacters, "name").filter((character) =>
+        ? sortArray(characters.data, "name").filter((character) =>
             character.name.toLowerCase().includes(value)
           )
-        : sortArray(dataCharacters, "name")
+        : sortArray(characters.data, "name")
     );
   };
 

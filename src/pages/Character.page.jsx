@@ -12,8 +12,7 @@ import { Dialog } from "../components/Dialog/Dialog.component";
 import { contentData } from "../utils";
 
 export const Character = ({
-  loading,
-  dataCharacter,
+  character,
   getCharacter,
   getDeaths,
   getQuote,
@@ -24,15 +23,17 @@ export const Character = ({
 
   useEffect(() => {
     if (
-      !loading &&
-      (!contentData(dataCharacter) || dataCharacter[0]?.name !== name)
+      !character.loading &&
+      (!contentData(character.data) || character.data[0]?.name !== name)
     ) {
       getCharacter(name);
     }
-  }, [loading, dataCharacter, getCharacter, name]);
+  }, [character, getCharacter, name]);
 
-  const character =
-    !loading && contentData(dataCharacter) ? dataCharacter[0] : undefined;
+  const characterData =
+    !character.loading && contentData(character.data)
+      ? character.data[0]
+      : undefined;
 
   // if (character) {
   //   character.occupation = dataCharacter[0]?.occupation?.join(", ");
@@ -51,13 +52,13 @@ export const Character = ({
 
   return (
     <Dialog onClose={history.goBack}>
-      {loading || !character ? (
+      {character.loading || !characterData ? (
         <CircularProgress />
       ) : (
         <>
           <Box textAlign="center">
             <img
-              src={character?.img}
+              src={characterData?.img}
               style={{ maxWidth: "20rem", maxHeight: "20rem" }}
               alt="Character's img"
             />
@@ -65,7 +66,7 @@ export const Character = ({
 
           <TableVerticalHeader
             headers={headers}
-            data={character}
+            data={characterData}
           ></TableVerticalHeader>
         </>
       )}

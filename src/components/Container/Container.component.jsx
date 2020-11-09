@@ -26,10 +26,19 @@ import { withTheme } from "../../providers/Theme/Theme";
 export const Container = ({
   menuItems,
   children,
-  loading,
   theme,
   searchEngineLink,
+  ...props
 }) => {
+  const loading =
+    props.character.loading ||
+    props.characters.loading ||
+    props.episode.loading ||
+    props.espisodes.loading ||
+    props.quote.loading ||
+    props.quotes.loading ||
+    props.deaths.loading;
+
   const classes = containerStyles();
   const themeMaterial = useTheme();
   const [open, setOpen] = useState(false);

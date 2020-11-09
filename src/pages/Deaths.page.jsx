@@ -7,17 +7,18 @@ import { Box } from "@material-ui/core";
 import { Alert } from "../components/Alert/Alert.component";
 import { contentData } from "../utils";
 
-export const Deaths = ({ loading, dataDeaths, getDeaths }) => {
+export const Deaths = ({ deaths, getDeaths }) => {
   useEffect(() => {
-    if (!loading && !contentData(dataDeaths)) {
+    if (!deaths.loading && !contentData(deaths.data)) {
       getDeaths();
     }
-  }, [loading, dataDeaths, getDeaths]);
+  }, [deaths, getDeaths]);
 
-  const data = dataDeaths.map((death) => ({
+  const data = deaths.data.map((death) => ({
     ...death,
     id: death.death_id,
   }));
+
   const [extraInfo, setExtraInfo] = useState({
     open: false,
     title: "",
@@ -68,7 +69,7 @@ export const Deaths = ({ loading, dataDeaths, getDeaths }) => {
         onCellClick={(CellParams) =>
           handleOpenToast(CellParams.colDef.headerName, CellParams.value)
         }
-        loading={loading}
+        loading={deaths.loading}
       />
     </>
   );

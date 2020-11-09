@@ -21,93 +21,113 @@ import {
   DATA_ERROR_QUOTE,
   DATA_ERROR_QUOTES,
 } from "../actions";
+import { createReducer } from "./utils";
 
 const initialState = {
-  loading: false,
-  errorDescription: "",
-  dataEpisodes: [],
-  dataEpisode: [],
-  dataCharacters: [],
-  dataCharacter: [],
-  dataQuotes: [],
-  dataQuote: [],
-  dataDeaths: [],
+  character: { loading: false, data: [], errorDescription: null },
+  characters: { loading: false, data: [], errorDescription: null },
+  episode: { loading: false, data: [], errorDescription: null },
+  espisodes: { loading: false, data: [], errorDescription: null },
+  quote: { loading: false, data: [], errorDescription: null },
+  quotes: { loading: false, data: [], errorDescription: null },
+  deaths: { loading: false, data: [], errorDescription: null },
 };
 
-export const reducers = (state = initialState, action) => {
-  switch (action.type) {
-    case DATA_CALL_EPISODES:
-    case DATA_CALL_EPISODE:
-    case DATA_CALL_CHARACTERS:
-    case DATA_CALL_CHARACTER:
-    case DATA_CALL_QUOTES:
-    case DATA_CALL_QUOTE:
-    case DATA_CALL_DEATHS:
-      return { ...state, loading: true };
-    case DATA_RESPONSE_EPISODES:
-      return { ...state, loading: false, dataEpisodes: action.payload };
-    case DATA_RESPONSE_EPISODE:
-      return { ...state, loading: false, dataEpisode: action.payload };
-    case DATA_RESPONSE_CHARACTERS:
-      return { ...state, loading: false, dataCharacters: action.payload };
-    case DATA_RESPONSE_CHARACTER:
-      return { ...state, loading: false, dataCharacter: action.payload };
-    case DATA_RESPONSE_QUOTES:
-      return { ...state, loading: false, dataQuotes: action.payload };
-    case DATA_RESPONSE_QUOTE:
-      return { ...state, loading: false, dataQuote: action.payload };
-    case DATA_RESPONSE_DEATHS:
-      return { ...state, loading: false, dataDeaths: action.payload };
-    case DATA_ERROR_EPISODES:
-      return {
-        ...state,
-        loading: false,
-        errorDescription: action.payload,
-        dataEpisodes: [],
-      };
-    case DATA_ERROR_EPISODE:
-      return {
-        ...state,
-        loading: false,
-        errorDescription: action.payload,
-        dataEpisode: [],
-      };
-    case DATA_ERROR_CHARACTERS:
-      return {
-        ...state,
-        loading: false,
-        errorDescription: action.payload,
-        dataCharacters: [],
-      };
-    case DATA_ERROR_CHARACTER:
-      return {
-        ...state,
-        loading: false,
-        errorDescription: action.payload,
-        dataCharacter: [],
-      };
-    case DATA_ERROR_QUOTES:
-      return {
-        ...state,
-        loading: false,
-        errorDescription: action.payload,
-        dataQuotes: [],
-      };
-    case DATA_ERROR_QUOTE:
-      return {
-        ...state,
-        loading: false,
-        errorDescription: action.payload,
-        dataQuote: [],
-      };
-    case DATA_ERROR_DEATHS:
-      return {
-        ...state,
-        loading: false,
-        errorDescription: action.payload,
-        dataDeaths: [],
-      };
-    default:
-      return state;
-  }
-};
+export const reducers = createReducer(initialState, {
+  [DATA_CALL_EPISODES]: (state, action) => ({
+    ...state,
+    episodes: { ...state.episodes, loading: true },
+  }),
+  [DATA_RESPONSE_EPISODES]: (state, action) => ({
+    ...state,
+    episodes: {
+      loading: false,
+      data: action.payload,
+      errorDescription: null,
+    },
+  }),
+  [DATA_ERROR_EPISODES]: (state, action) => ({
+    ...state,
+    episodes: {
+      loading: false,
+      data: [],
+      errorDescription: action.payload,
+    },
+  }),
+  [DATA_CALL_EPISODE]: (state, action) => ({
+    ...state,
+    episode: { ...state.episode, loading: true },
+  }),
+  [DATA_RESPONSE_EPISODE]: (state, action) => ({
+    ...state,
+    episode: { loading: false, data: action.payload, errorDescription: null },
+  }),
+  [DATA_ERROR_EPISODE]: (state, action) => ({
+    ...state,
+    episode: { loading: false, data: [], errorDescription: action.payload },
+  }),
+  [DATA_CALL_CHARACTERS]: (state, action) => ({
+    ...state,
+    characters: { ...state.characters, loading: true },
+  }),
+  [DATA_RESPONSE_CHARACTERS]: (state, action) => ({
+    ...state,
+    characters: {
+      loading: false,
+      data: action.payload,
+      errorDescription: null,
+    },
+  }),
+  [DATA_ERROR_CHARACTERS]: (state, action) => ({
+    ...state,
+    characters: { loading: false, data: [], errorDescription: action.payload },
+  }),
+  [DATA_CALL_CHARACTER]: (state, action) => ({
+    ...state,
+    character: { ...state.character, loading: true },
+  }),
+  [DATA_RESPONSE_CHARACTER]: (state, action) => ({
+    ...state,
+    character: { loading: false, data: action.payload, errorDescription: null },
+  }),
+  [DATA_ERROR_CHARACTER]: (state, action) => ({
+    ...state,
+    character: { loading: false, data: [], errorDescription: action.payload },
+  }),
+  [DATA_CALL_QUOTES]: (state, action) => ({
+    ...state,
+    quotes: { ...state.quotes, loading: true },
+  }),
+  [DATA_RESPONSE_QUOTES]: (state, action) => ({
+    ...state,
+    quotes: { loading: false, data: action.payload, errorDescription: null },
+  }),
+  [DATA_ERROR_QUOTES]: (state, action) => ({
+    ...state,
+    quotes: { loading: false, data: [], errorDescription: action.payload },
+  }),
+  [DATA_CALL_QUOTE]: (state, action) => ({
+    ...state,
+    quote: { ...state.quote, loading: true },
+  }),
+  [DATA_RESPONSE_QUOTE]: (state, action) => ({
+    ...state,
+    quote: { loading: false, data: action.payload, errorDescription: null },
+  }),
+  [DATA_ERROR_QUOTE]: (state, action) => ({
+    ...state,
+    quote: { loading: false, data: [], errorDescription: action.payload },
+  }),
+  [DATA_CALL_DEATHS]: (state, action) => ({
+    ...state,
+    deaths: { ...state.deaths, loading: true },
+  }),
+  [DATA_RESPONSE_DEATHS]: (state, action) => ({
+    ...state,
+    deaths: { loading: false, data: action.payload, errorDescription: null },
+  }),
+  [DATA_ERROR_DEATHS]: (state, action) => ({
+    ...state,
+    deaths: { loading: false, data: [], errorDescription: action.payload },
+  }),
+});
