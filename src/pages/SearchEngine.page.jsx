@@ -11,6 +11,7 @@ import {
 import { contentData, objectContains } from "../utils";
 import { useEffect, useState } from "react";
 import { Table } from "../components/Table/Table.component";
+import { CheckboxGroup } from "../components/Form/CheckboxGroup.component";
 
 export const SearchEngine = ({
   deaths,
@@ -68,26 +69,34 @@ export const SearchEngine = ({
     },
   });
 
+  const whereLookItems = [
+    { value: "episodes", title: "Episodes" },
+    { value: "characters", title: "Characters" },
+    { value: "deaths", title: "Deaths" },
+  ];
+
   const handleSubmit = (values) => {
     const something = values.something;
 
-    if (something || something.trim().length > 0) {
+    if (something && something.trim().length > 0) {
+      const filterData = (id, list) => {
+        return values.whereLook.includes(id)
+          ? list.filter((item) => objectContains(item, something))
+          : [];
+      };
+
       setData({
         episodes: {
           ...data.episodes,
-          data: episodes.data.filter((episode) =>
-            objectContains(episode, something)
-          ),
+          data: filterData("episodes", episodes.data),
         },
         characters: {
           ...data.characters,
-          data: characters.data.filter((character) =>
-            objectContains(character, something)
-          ),
+          data: filterData("characters", characters.data),
         },
         deaths: {
           ...data.deaths,
-          data: deaths.data.filter((death) => objectContains(death, something)),
+          data: filterData("deaths", deaths.data),
         },
       });
     } else {
@@ -107,11 +116,18 @@ export const SearchEngine = ({
         <Formik
           initialValues={{
             something: "",
+            whereLook: ["episodes", "characters", "deaths"],
           }}
           onSubmit={handleSubmit}
         >
           <Form>
             <Field id="something" title="Write something..." />
+
+            <CheckboxGroup
+              id="whereLook"
+              items={whereLookItems}
+              title="Where to look?"
+            />
 
             <button type="submit">Search</button>
           </Form>
