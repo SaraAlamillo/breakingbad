@@ -28,3 +28,29 @@ sortArray.propTypes = {
   list: PropTypes.array.isRequired,
   field: PropTypes.string,
 };
+
+/**
+ * Comprueba todas las posiciones de un objecto en busca de:
+ *    1. Si es una cadena, comprueba si la posición contiene el valor pasado
+ *    2. Si es un entero, comprueba si la posición es igual al valor pasado
+ *    3. En cualquier otro caso, no se comprueba nada
+ * @param {Object} object Objecto donde buscar
+ * @param {Any} value Valor a buscar
+ * @returns {Bool}
+ */
+export const objectContains = (object, value) => {
+  const valueLowerCase = value.toLowerCase();
+
+  return Object.values(object).some((position) =>
+    typeof position === "string"
+      ? position.toLowerCase().includes(valueLowerCase)
+      : typeof position === "number"
+      ? position === +value
+      : false
+  );
+};
+
+objectContains.propTypes = {
+  object: PropTypes.object.isRequired,
+  value: PropTypes.any.isRequired,
+};

@@ -6,7 +6,7 @@ export const TableRow = ({ id, headers, row, ...props }) => {
   return (
     <TableRowMaterial key={id}>
       {headers.map((header) => (
-        <TableCell component="th" scope="row" key={id + row[header.id]}>
+        <TableCell component="th" scope="row" key={id + header.id}>
           {row[header.id]}
         </TableCell>
       ))}

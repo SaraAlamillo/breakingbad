@@ -12,17 +12,7 @@ import {
 import { TableRow } from "./TableRow.component";
 import { TableRowCollapse } from "./TableRowCollapse.component";
 
-export const Table = ({
-  headers,
-  body,
-  collapse,
-  rowId,
-  canSort,
-  ...props
-}) => {
-  console.log("headers ", headers);
-  console.log("body ", body);
-
+export const Table = ({ headers, body, collapse, nameCellId, ...props }) => {
   return (
     <TableContainer component={Paper}>
       <TableMaterial aria-label="Data table">
@@ -40,7 +30,11 @@ export const Table = ({
             collapse ? (
               <TableRowCollapse headers={headers} row={row}></TableRowCollapse>
             ) : (
-              <TableRow id={rowId} headers={headers} row={row}></TableRow>
+              <TableRow
+                id={row[nameCellId]}
+                headers={headers}
+                row={row}
+              ></TableRow>
             )
           )}
         </TableBody>
@@ -57,9 +51,5 @@ Table.propTypes = {
     })
   ),
   collapse: PropTypes.bool.isRequired,
-  canSort: PropTypes.bool.isRequired,
-};
-
-Table.defaultProps = {
-  canSort: false,
+  nameCellId: PropTypes.any.isRequired,
 };
