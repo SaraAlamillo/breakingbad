@@ -9,143 +9,103 @@ import {
   Toolbar,
   Typography,
 } from "@material-ui/core";
-import { Component } from "react";
+import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import { DATA_CALL_EPISODE } from "../actions";
 import CloseIcon from "@material-ui/icons/Close";
+import { contentData } from "../utils";
 
-export class Episode extends Component {
-  static mapStateToProps = (state) => ({ ...state });
+export const Episode = ({ episode, getEpisode, history, match, ...props }) => {
+  const [idEpisode] = useState(+match?.params?.id);
 
-  static mapDispatchToProps = (dispatch) => ({
-    getEpisode: (id) => dispatch({ type: DATA_CALL_EPISODE, payload: id }),
-  });
-
-  callGetEpisode(props, nextProps) {
-    if (
-      !props.loading &&
-      !nextProps.loading &&
-      (!Array.isArray(props.dataEpisode) ||
-        props.dataEpisode.length === 0 ||
-        (props.dataEpisode.length > 0 &&
-          props.dataEpisode[0].name !== nextProps.match?.params?.id))
-    ) {
-      nextProps.getEpisode(nextProps.match?.params?.id);
+  useEffect(() => {
+    if (!episode.loading && !contentData(episode.data)) {
+      getEpisode(idEpisode);
     }
-  }
+  }, [episode, getEpisode, idEpisode]);
 
-  componentDidMount() {
-    console.log("componentDidMount");
-    this.callGetEpisode(this.props, this.props);
-  }
+  const episodeData =
+    !episode.loading && contentData(episode.data) ? episode.data[0] : undefined;
 
-  shouldComponentUpdate(nextProps, nextState) {
-    let render = false;
+  return (
+    <>
+      <Dialog fullScreen open={true}>
+        <Toolbar>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="close"
+            onClick={history.goBack}
+          >
+            <CloseIcon />
+          </IconButton>
+        </Toolbar>
 
-    console.log(this.props.dataEpisode);
-    console.log(nextProps.dataEpisode);
+        {!episodeData ? (
+          <CircularProgress />
+        ) : (
+          <>
+            <Table>
+              <TableBody>
+                <TableRow>
+                  <TableCell component="th" scope="row">
+                    Title
+                  </TableCell>
+                  <TableCell>{episodeData?.title}</TableCell>
+                </TableRow>
 
-    this.callGetEpisode(this.props, nextProps);
+                <TableRow>
+                  <TableCell component="th" scope="row">
+                    Season
+                  </TableCell>
+                  <TableCell>{episodeData?.season}</TableCell>
+                </TableRow>
 
-    if (
-      Array.isArray(nextProps.dataEpisode) &&
-      nextProps.dataEpisode.length > 0 &&
-      Array.isArray(this.props.dataEpisode) &&
-      this.props.dataEpisode.length > 0 &&
-      nextProps.dataEpisode[0].episode_id !==
-        this.props.dataEpisode[0].episode_id
-    ) {
-      render = true;
-    }
-    console.log("shouldComponentUpdate ", render);
+                <TableRow>
+                  <TableCell component="th" scope="row">
+                    Episode
+                  </TableCell>
+                  <TableCell>{episodeData?.episode}</TableCell>
+                </TableRow>
 
-    return render;
-  }
+                <TableRow>
+                  <TableCell component="th" scope="row">
+                    Air date
+                  </TableCell>
+                  <TableCell>{episodeData?.air_date}</TableCell>
+                </TableRow>
 
-  render() {
-    const episode =
-      Array.isArray(this.props.dataEpisode) && this.props.dataEpisode.length > 0
-        ? this.props.dataEpisode[0]
-        : undefined;
+                <TableRow>
+                  <TableCell component="th" scope="row">
+                    Characters
+                  </TableCell>
+                  <TableCell>
+                    {episodeData?.characters?.map((character) => (
+                      <Typography>
+                        <Link to={"/characters/" + character}>{character}</Link>
+                      </Typography>
+                    ))}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </>
+        )}
+      </Dialog>
+    </>
+  );
+};
 
-    console.log("episode ", episode);
+const mapStateToProps = (state) => ({ ...state });
 
-    return (
-      <>
-        <Dialog fullScreen open={true}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="close"
-              onClick={this.props.history.goBack}
-            >
-              <CloseIcon />
-            </IconButton>
-          </Toolbar>
-
-          {this.props.loading || !episode ? (
-            <CircularProgress />
-          ) : (
-            <>
-              <Table>
-                <TableBody>
-                  <TableRow>
-                    <TableCell component="th" scope="row">
-                      Title
-                    </TableCell>
-                    <TableCell>{episode?.title}</TableCell>
-                  </TableRow>
-
-                  <TableRow>
-                    <TableCell component="th" scope="row">
-                      Season
-                    </TableCell>
-                    <TableCell>{episode?.season}</TableCell>
-                  </TableRow>
-
-                  <TableRow>
-                    <TableCell component="th" scope="row">
-                      Episode
-                    </TableCell>
-                    <TableCell>{episode?.episode}</TableCell>
-                  </TableRow>
-
-                  <TableRow>
-                    <TableCell component="th" scope="row">
-                      Air date
-                    </TableCell>
-                    <TableCell>{episode?.air_date}</TableCell>
-                  </TableRow>
-
-                  <TableRow>
-                    <TableCell component="th" scope="row">
-                      Characters
-                    </TableCell>
-                    <TableCell>
-                      {episode?.characters?.map((character) => (
-                        <Typography>
-                          <Link to={"/characters/" + character}>
-                            {character}
-                          </Link>
-                        </Typography>
-                      ))}
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </>
-          )}
-        </Dialog>
-      </>
-    );
-  }
-}
+const mapDispatchToProps = (dispatch) => ({
+  getEpisode: (id) => dispatch({ type: DATA_CALL_EPISODE, payload: id }),
+});
 
 export const EpisodeRoute = withRouter(Episode);
 
 export const EpisodeRedux = connect(
-  Episode.mapStateToProps,
-  Episode.mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(EpisodeRoute);

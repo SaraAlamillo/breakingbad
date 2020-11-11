@@ -11,7 +11,14 @@ export const Episodes = ({ data }) => {
     { id: "detail", name: "See more" },
   ];
 
-  return <Table headers={headers} body={data} collapse={false}></Table>;
+  return (
+    <Table
+      headers={headers}
+      body={data}
+      collapse={false}
+      nameCellId="episode_id"
+    ></Table>
+  );
 };
 
 Episodes.propTypes = {

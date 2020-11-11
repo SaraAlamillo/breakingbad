@@ -55,7 +55,7 @@ export const Character = ({
 
   return (
     <Dialog onClose={history.goBack}>
-      {character.loading || !characterData ? (
+      {!characterData ? (
         <CircularProgress />
       ) : (
         <>
