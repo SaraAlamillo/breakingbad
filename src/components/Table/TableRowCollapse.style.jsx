@@ -6,4 +6,8 @@ export const tableRowCollapseStyles = makeStyles({
       borderBottom: "unset",
     },
   },
+  cell: {
+    paddingBottom: 0,
+    paddingTop: 0,
+  },
 });

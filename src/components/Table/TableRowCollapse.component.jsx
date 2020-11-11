@@ -12,14 +12,11 @@ import { tableRowCollapseStyles } from "./TableRowCollapse.style";
 
 export const TableRowCollapse = ({ headers, row }) => {
   const [open, setOpen] = useState(false);
-  const classes = tableRowCollapseStyles();
-
-  console.log("headers ", headers);
-  console.log("row ", row);
+  const styleClasses = tableRowCollapseStyles();
 
   return (
     <React.Fragment key={row.episode_id}>
-      <TableRowMaterial className={classes.root}>
+      <TableRowMaterial className={styleClasses.root}>
         <TableCell>
           <IconButton
             aria-label="expand row"
@@ -40,7 +37,7 @@ export const TableRowCollapse = ({ headers, row }) => {
         ))}
       </TableRowMaterial>
       <TableRowCollapse>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableCell className={styleClasses.cell} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>aaaaaaaaa</Box>
           </Collapse>

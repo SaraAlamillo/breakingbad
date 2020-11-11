@@ -6,6 +6,7 @@ import { Fab, Tooltip } from "@material-ui/core";
 import { themeSelectorStyle } from "./ThemeSelector.style";
 
 export const ThemeSelector = ({ children }) => {
+  const styleClasses = themeSelectorStyle();
   const [dark, setDark] = useState(false);
 
   const handleClick = () => {
@@ -22,7 +23,7 @@ export const ThemeSelector = ({ children }) => {
         <Fab
           color="primary"
           onClick={handleClick}
-          style={themeSelectorStyle.absolute}
+          className={styleClasses.absolute}
         >
           {dark ? <Brightness7Icon /> : <NightsStayIcon />}
         </Fab>

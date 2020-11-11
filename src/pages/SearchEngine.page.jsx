@@ -106,8 +106,6 @@ export const SearchEngine = ({
         deaths: { ...data.deaths, data: [] },
       });
     }
-
-    console.log(data);
   };
 
   return (

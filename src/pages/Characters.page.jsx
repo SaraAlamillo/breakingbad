@@ -11,8 +11,11 @@ import { Link, withRouter, Route } from "react-router-dom";
 import { DATA_CALL_CHARACTERS } from "../actions";
 import { CharacterRedux } from "./Character.page";
 import { contentData, sortArray } from "../utils";
+import { charactersStyle } from "./Characters.style";
 
 export const Characters = ({ characters, getCharacters }) => {
+  const styleClasses = charactersStyle();
+
   useEffect(() => {
     if (!characters.loading && !contentData(characters.data)) {
       getCharacters();
@@ -51,7 +54,7 @@ export const Characters = ({ characters, getCharacters }) => {
             key={character.char_id}
             component={Link}
             to={"/characters/" + character.name}
-            style={{ margin: 20 }}
+            className={styleClasses.button}
           >
             <ListItemAvatar>
               <Avatar src={character.img} />

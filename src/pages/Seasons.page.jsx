@@ -60,16 +60,16 @@ export class Seasons extends Component {
   }
 
   render() {
-    const seasons = this.getSeasons();
+    const styleClasses = seasonsStyle();
 
-    console.log(seasons);
+    const seasons = this.getSeasons();
 
     const handleChange = (event, value) => {
       this.setState({ tab: value });
     };
 
     return (
-      <div style={seasonsStyle.root}>
+      <div className={styleClasses.root}>
         <AppBar position="static" color="default">
           <Tabs
             value={this.state.tab}

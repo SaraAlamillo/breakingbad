@@ -1,7 +1,9 @@
-export const themeSelectorStyle = {
+import { makeStyles } from "@material-ui/core";
+
+export const themeSelectorStyle = makeStyles((theme) => ({
   absolute: {
     position: "fixed",
-    bottom: "3rem",
-    right: "3rem",
+    bottom: theme.spacing(5),
+    right: theme.spacing(5),
   },
-};
+}));

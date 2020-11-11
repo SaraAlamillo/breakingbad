@@ -10,6 +10,7 @@ import { Box, CircularProgress } from "@material-ui/core";
 import { TableVerticalHeader } from "../components/Table/TableVerticalHeader.component";
 import { Dialog } from "../components/Dialog/Dialog.component";
 import { contentData } from "../utils";
+import { characterStyle } from "./Character.style";
 
 export const Character = ({
   character,
@@ -20,6 +21,8 @@ export const Character = ({
   history,
 }) => {
   const name = match?.params?.name || "";
+
+  const styleClasses = characterStyle();
 
   useEffect(() => {
     if (
@@ -59,7 +62,7 @@ export const Character = ({
           <Box textAlign="center">
             <img
               src={characterData?.img}
-              style={{ maxWidth: "20rem", maxHeight: "20rem" }}
+              className={styleClasses.img}
               alt="Character's img"
             />
           </Box>

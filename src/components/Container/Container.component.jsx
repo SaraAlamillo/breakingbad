@@ -39,7 +39,7 @@ export const Container = ({
     props.quotes.loading ||
     props.deaths.loading;
 
-  const classes = containerStyles();
+  const styleClasses = containerStyles();
   const themeMaterial = useTheme();
   const [open, setOpen] = useState(false);
 
@@ -52,11 +52,11 @@ export const Container = ({
   };
 
   return (
-    <MaterialContainer className={classes.root}>
+    <MaterialContainer className={styleClasses.root}>
       <AppBar
         position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
+        className={clsx(styleClasses.appBar, {
+          [styleClasses.appBarShift]: open,
         })}
         color={theme.dark ? "primary" : "secondary"}
       >
@@ -66,7 +66,7 @@ export const Container = ({
             aria-label="Open the left menu"
             onClick={handleDrawerOpen}
             edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
+            className={clsx(styleClasses.menuButton, open && styleClasses.hide)}
           >
             <MenuIcon />
           </IconButton>
@@ -76,19 +76,19 @@ export const Container = ({
           </Typography>
         </Toolbar>
 
-        <LinearProgress className={clsx(!loading && classes.hide)} />
+        <LinearProgress className={clsx(!loading && styleClasses.hide)} />
       </AppBar>
 
       <Drawer
-        className={classes.drawer}
+        className={styleClasses.drawer}
         variant="persistent"
         anchor="left"
         open={open}
         classes={{
-          paper: classes.drawerPaper,
+          paper: styleClasses.drawerPaper,
         }}
       >
-        <div className={classes.drawerHeader}>
+        <div className={styleClasses.drawerHeader}>
           <IconButton onClick={handleDrawerClose}>
             {themeMaterial.direction === "ltr" ? (
               <ChevronLeftIcon />
@@ -103,7 +103,10 @@ export const Container = ({
         <List>
           {menuItems.map((item) => (
             <ListItem button key={item.id} component={Link} to={item.route}>
-              <ListItemText primary={item.name} className={classes.linkMenu} />
+              <ListItemText
+                primary={item.name}
+                className={styleClasses.linkMenu}
+              />
             </ListItem>
           ))}
 
@@ -113,7 +116,7 @@ export const Container = ({
               <ListItem button component={Link} to={searchEngineLink}>
                 <ListItemText
                   primary="Search engine"
-                  className={classes.linkMenu}
+                  className={styleClasses.linkMenu}
                 />
               </ListItem>
             </>
@@ -122,11 +125,11 @@ export const Container = ({
       </Drawer>
 
       <main
-        className={clsx(classes.content, {
-          [classes.contentShift]: open,
+        className={clsx(styleClasses.content, {
+          [styleClasses.contentShift]: open,
         })}
       >
-        <div className={classes.drawerHeader} />
+        <div className={styleClasses.drawerHeader} />
         {children}
       </main>
     </MaterialContainer>
