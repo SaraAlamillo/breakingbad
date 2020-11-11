@@ -54,3 +54,25 @@ objectContains.propTypes = {
   object: PropTypes.object.isRequired,
   value: PropTypes.any.isRequired,
 };
+
+/**
+ * Devuelve una lista ordenada de los diferentes valores que contiene una posición determinada (sin repetir ninguno)
+ * @param {Array} list Array de objetos
+ * @param {String | Number} position Posición de la que se obtienen los valores
+ * @return {Array}
+ */
+export const getValuesNotRepeat = (list, position) => {
+  return list
+    ?.map((item) => item[position].trim())
+    .reduce(
+      (unique, item) => (unique.includes(item) ? unique : [...unique, item]),
+      []
+    )
+    .sort();
+};
+
+getValuesNotRepeat.propTypes = {
+  list: PropTypes.arrayOf(PropTypes.object).isRequired,
+  position: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    .isRequired,
+};

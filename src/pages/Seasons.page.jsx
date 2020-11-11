@@ -1,115 +1,96 @@
-import { AppBar, Tab, Tabs } from "@material-ui/core";
-import React, { Component } from "react";
+import { AppBar, Tab as TabMaterial, Tabs } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import { DATA_CALL_EPISODES } from "../actions";
-import { Route } from "react-router-dom";
 import { EpisodesRedux } from "./Episodes.page";
 import { seasonsStyle } from "./Seasons.style";
 import SearchIcon from "@material-ui/icons/Search";
+import { contentData, getValuesNotRepeat } from "../utils";
 
-export class Seasons extends Component {
-  static mapStateToProps = (state) => ({ ...state });
+export const Seasons = ({ episodes, getEpisodes, match }) => {
+  useEffect(() => {
+    if (!episodes.loading && !contentData(episodes.data)) {
+      getEpisodes();
+    }
+  }, [episodes, getEpisodes]);
 
-  static mapDispatchToProps = (dispatch) => ({
-    getEpisodes: () => dispatch({ type: DATA_CALL_EPISODES }),
-  });
+  const seasons = getValuesNotRepeat(episodes.data, "season")?.map(
+    (season) => ({
+      id: +season.trim() - 1,
+      name: season,
+      route: "/seasons/" + (+season.trim() - 1),
+      episodes: episodes.data
+        ?.filter((episode) => episode.season.trim() === season)
+        .map((episode) => ({
+          ...episode,
+          detail: (
+            <Link to={"/episode/" + episode.episode_id}>
+              <SearchIcon />
+            </Link>
+          ),
+        })),
+    })
+  );
 
-  constructor(props) {
-    super(props);
+  const [tab, setTab] = useState(+match?.params?.id || 0);
 
-    const id =
-      !props.match.isExact && +props.location.pathname.split("/").pop() - 1;
-    this.state = {
-      id,
-      tab: id || 0,
-    };
+  if (contentData(seasons)) {
+    const minTab = seasons[0].id;
+    const maxTab = seasons[seasons.length - 1].id;
+
+    if (tab > maxTab) {
+      setTab(maxTab);
+    } else if (tab < minTab) {
+      setTab(minTab);
+    }
   }
 
-  getSeasons() {
-    const repeatSeasons = this.props.dataEpisodes?.map((episode) =>
-      episode.season.trim()
-    );
-    const seasons = repeatSeasons
-      ?.reduce(
-        (unique, item) => (unique.includes(item) ? unique : [...unique, item]),
-        []
-      )
-      .sort()
-      .map((season, index) => ({
-        id: index,
-        name: season,
-        route: "/seasons/" + season,
-        episodes: this.props.dataEpisodes
-          ?.filter((episode) => episode.season.trim() === season)
-          .map((episode) => ({
-            ...episode,
-            detail: (
-              <Link to={"/episode/" + episode.episode_id}>
-                <SearchIcon />
-              </Link>
-            ),
-          })),
-      }));
+  const styleClasses = seasonsStyle();
 
-    return seasons;
-  }
+  const handleChange = (event, value) => {
+    setTab(value);
+  };
 
-  componentDidMount() {
-    this.props.getEpisodes();
-  }
+  return (
+    <div className={styleClasses.root}>
+      <AppBar position="static" color="default">
+        <Tabs
+          value={tab}
+          onChange={handleChange}
+          indicatorColor="primary"
+          textColor="primary"
+          variant="scrollable"
+          scrollButtons="auto"
+          aria-label="Change the current season"
+        >
+          {seasons.map((season) => (
+            <TabMaterial
+              label={season.name}
+              key={season.id}
+              component={Link}
+              to={season.route}
+            />
+          ))}
+        </Tabs>
+      </AppBar>
 
-  render() {
-    const styleClasses = seasonsStyle();
+      <EpisodesRedux
+        data={seasons.find((season) => season.id === tab)?.episodes || []}
+      ></EpisodesRedux>
+    </div>
+  );
+};
 
-    const seasons = this.getSeasons();
+const mapStateToProps = (state) => ({ ...state });
 
-    const handleChange = (event, value) => {
-      this.setState({ tab: value });
-    };
-
-    return (
-      <div className={styleClasses.root}>
-        <AppBar position="static" color="default">
-          <Tabs
-            value={this.state.tab}
-            onChange={handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            variant="scrollable"
-            scrollButtons="auto"
-            aria-label="Change the current season"
-          >
-            {seasons.map((season) => (
-              <Tab
-                label={season.name}
-                key={season.id}
-                component={Link}
-                to={season.route}
-              />
-            ))}
-          </Tabs>
-        </AppBar>
-
-        {this.state.id ? (
-          <Route path="/seasons/:id">
-            <EpisodesRedux
-              data={seasons[this.state.tab]?.episodes || []}
-            ></EpisodesRedux>
-          </Route>
-        ) : (
-          <EpisodesRedux
-            data={seasons[this.state.tab]?.episodes || []}
-          ></EpisodesRedux>
-        )}
-      </div>
-    );
-  }
-}
+const mapDispatchToProps = (dispatch) => ({
+  getEpisodes: () => dispatch({ type: DATA_CALL_EPISODES }),
+});
 
 export const SeasonsRoute = withRouter(Seasons);
 
 export const SeasonsRedux = connect(
-  Seasons.mapStateToProps,
-  Seasons.mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(SeasonsRoute);

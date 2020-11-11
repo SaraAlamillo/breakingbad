@@ -24,7 +24,7 @@ function App() {
             searchEngineLink="/search"
           >
             <Switch>
-              <Route path="/seasons">
+              <Route path={["/seasons/:id", "/seasons"]}>
                 <SeasonsRedux></SeasonsRedux>
               </Route>
 
